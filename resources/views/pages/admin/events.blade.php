@@ -6,7 +6,7 @@ use App\Models\CalendarEvent;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.admin')] #[Title('Manage Calendar Events')] class extends Component {
     /** @var Collection<int, CalendarEvent> */
@@ -276,7 +276,7 @@ new #[Layout('components.layouts.admin')] #[Title('Manage Calendar Events')] cla
                                     wire:model="category"
                                     class="w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 @foreach($categoryOptions as $value => $label)
-                                    <option value="{{ $value }}">{{ $label }}</option>
+                                    <option wire:key="category-option-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
                             </select>
                             @error('category')

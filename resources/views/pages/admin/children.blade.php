@@ -6,7 +6,7 @@ use App\Models\Child;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.admin')] #[Title('Manage Children')] class extends Component {
     /** @var Collection<int, Child> */

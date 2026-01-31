@@ -6,7 +6,7 @@ use App\Models\CalendarEvent;
 use App\Models\Child;
 use App\Models\DepartureTime;
 use App\Models\EventRoutineItem;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -18,7 +18,7 @@ test('event routines admin page loads successfully', function () {
 test('event routines page displays departure times', function () {
     $departure = DepartureTime::factory()->create(['name' => 'School Bus']);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->assertSee('School Bus');
 });
 
@@ -28,7 +28,7 @@ test('event routines page displays calendar events', function () {
         'starts_at' => now()->addDays(5),
     ]);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('setTab', 'events')
         ->assertSee('Birthday Party');
 });
@@ -37,7 +37,7 @@ test('can select a departure time to manage routines', function () {
     $departure = DepartureTime::factory()->create(['name' => 'School Bus']);
     Child::factory()->create(['name' => 'Emma']);
 
-    $component = Volt::test('admin.event-routines')
+    $component = Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->assertSet('selectedEventableId', $departure->id)
         ->assertSet('selectedEventableType', 'departure');
@@ -52,7 +52,7 @@ test('can select a calendar event to manage routines', function () {
         'starts_at' => now()->addDays(3),
     ]);
 
-    $component = Volt::test('admin.event-routines')
+    $component = Livewire::test('pages::admin.event-routines')
         ->call('setTab', 'events')
         ->call('selectEventable', 'event', $event->id)
         ->assertSet('selectedEventableId', $event->id)
@@ -66,7 +66,7 @@ test('can create a routine item for a departure time', function () {
     $departure = DepartureTime::factory()->create(['name' => 'School Bus']);
     $child = Child::factory()->create(['name' => 'Emma']);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('create')
         ->set('childId', $child->id)
@@ -89,7 +89,7 @@ test('can create a routine item for a calendar event', function () {
     ]);
     $child = Child::factory()->create(['name' => 'Jack']);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('setTab', 'events')
         ->call('selectEventable', 'event', $event->id)
         ->call('create')
@@ -114,7 +114,7 @@ test('can edit a routine item', function () {
         ->forChild($child)
         ->create(['name' => 'Original Name']);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('edit', $item->id)
         ->assertSet('editingId', $item->id)
@@ -134,7 +134,7 @@ test('can delete a routine item', function () {
         ->forChild($child)
         ->create(['name' => 'To Delete']);
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('confirmDelete', $item->id)
         ->assertSet('showDeleteConfirm', true)
@@ -147,7 +147,7 @@ test('validation requires name', function () {
     $departure = DepartureTime::factory()->create();
     $child = Child::factory()->create();
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('create')
         ->set('childId', $child->id)
@@ -159,7 +159,7 @@ test('validation requires name', function () {
 test('validation requires child', function () {
     $departure = DepartureTime::factory()->create();
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('create')
         ->set('childId', 999999)
@@ -171,7 +171,7 @@ test('validation requires child', function () {
 test('switching tabs clears selection', function () {
     $departure = DepartureTime::factory()->create();
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->assertSet('selectedEventableId', $departure->id)
         ->call('setTab', 'events')
@@ -183,7 +183,7 @@ test('cancel clears form state', function () {
     $departure = DepartureTime::factory()->create();
     $child = Child::factory()->create();
 
-    Volt::test('admin.event-routines')
+    Livewire::test('pages::admin.event-routines')
         ->call('selectEventable', 'departure', $departure->id)
         ->call('create')
         ->set('name', 'Test Item')
@@ -191,4 +191,3 @@ test('cancel clears form state', function () {
         ->assertSet('showForm', false)
         ->assertSet('name', '');
 });
-

@@ -3,10 +3,8 @@
 declare(strict_types=1);
 
 use App\Models\Setting;
-use App\Services\Weather\WeatherData;
-use App\Services\Weather\WeatherService;
 use Illuminate\Support\Facades\Cache;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 beforeEach(function () {
     Cache::flush();
@@ -32,7 +30,7 @@ test('widget shows unavailable message when no weather data', function () {
     Setting::set('weather.enabled', true);
     Setting::set('weather.location', ['lat' => null, 'lon' => null, 'name' => null]);
 
-    Volt::test('dashboard.weather-widget')
+    Livewire::test('dashboard.weather-widget')
         ->assertSee('Weather unavailable');
 });
 
@@ -58,7 +56,7 @@ test('widget shows weather data when available', function () {
 
     Cache::put('weather:40.71,-74.01', $cachedData, now()->addMinutes(20));
 
-    Volt::test('dashboard.weather-widget')
+    Livewire::test('dashboard.weather-widget')
         ->assertSee('72°')
         ->assertSee('Clear');
 });
@@ -84,7 +82,7 @@ test('widget respects size setting for compact', function () {
 
     Cache::put('weather:40.71,-74.01', $cachedData, now()->addMinutes(20));
 
-    Volt::test('dashboard.weather-widget')
+    Livewire::test('dashboard.weather-widget')
         ->assertSee('72°')
         ->assertDontSee('Feels like'); // Compact doesn't show feels like
 });
@@ -110,7 +108,7 @@ test('widget refreshWeather method reloads data', function () {
 
     Cache::put('weather:40.71,-74.01', $cachedData, now()->addMinutes(20));
 
-    Volt::test('dashboard.weather-widget')
+    Livewire::test('dashboard.weather-widget')
         ->assertSee('72°')
         ->call('refreshWeather')
         ->assertSee('72°');

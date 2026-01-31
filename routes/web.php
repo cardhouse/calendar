@@ -1,10 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Livewire\Volt\Volt;
 
 // Main dashboard
-Volt::route('/', 'dashboard')->name('dashboard');
+Route::livewire('/', 'pages::dashboard')->name('dashboard');
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -12,18 +11,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::redirect('/', '/admin/children');
 
     // Children management
-    Volt::route('/children', 'admin.children')->name('children.index');
-    Volt::route('/children/{child}/routines', 'admin.routines')->name('children.routines');
+    Route::livewire('/children', 'pages::admin.children')->name('children.index');
+    Route::livewire('/children/{child}/routines', 'pages::admin.routines')->name('children.routines');
 
     // Departure times
-    Volt::route('/departures', 'admin.departures')->name('departures.index');
+    Route::livewire('/departures', 'pages::admin.departures')->name('departures.index');
 
     // Calendar events
-    Volt::route('/events', 'admin.events')->name('events.index');
+    Route::livewire('/events', 'pages::admin.events')->name('events.index');
 
     // Event-specific routines
-    Volt::route('/event-routines', 'admin.event-routines')->name('event-routines.index');
+    Route::livewire('/event-routines', 'pages::admin.event-routines')->name('event-routines.index');
 
     // Weather settings
-    Volt::route('/weather', 'admin.weather')->name('weather.index');
+    Route::livewire('/weather', 'pages::admin.weather')->name('weather.index');
 });

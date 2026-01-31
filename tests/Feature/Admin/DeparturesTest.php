@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\DepartureTime;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -22,7 +22,7 @@ test('departure times are listed', function () {
 });
 
 test('can create a new departure time', function () {
-    Volt::test('admin.departures')
+    Livewire::test('pages::admin.departures')
         ->call('create')
         ->set('name', 'School bus')
         ->set('departureTime', '07:45')
@@ -36,7 +36,7 @@ test('can create a new departure time', function () {
 test('can edit a departure time', function () {
     $departure = DepartureTime::factory()->create(['name' => 'School bus']);
 
-    Volt::test('admin.departures')
+    Livewire::test('pages::admin.departures')
         ->call('edit', $departure->id)
         ->assertSet('name', 'School bus')
         ->set('name', 'Morning bus')
@@ -48,7 +48,7 @@ test('can edit a departure time', function () {
 test('can toggle departure active status', function () {
     $departure = DepartureTime::factory()->create(['is_active' => true]);
 
-    Volt::test('admin.departures')
+    Livewire::test('pages::admin.departures')
         ->call('toggleActive', $departure->id);
 
     expect($departure->fresh()->is_active)->toBeFalse();
@@ -57,7 +57,7 @@ test('can toggle departure active status', function () {
 test('can delete a departure time', function () {
     $departure = DepartureTime::factory()->create();
 
-    Volt::test('admin.departures')
+    Livewire::test('pages::admin.departures')
         ->call('confirmDelete', $departure->id)
         ->call('delete');
 
@@ -65,7 +65,7 @@ test('can delete a departure time', function () {
 });
 
 test('validation requires at least one day', function () {
-    Volt::test('admin.departures')
+    Livewire::test('pages::admin.departures')
         ->call('create')
         ->set('name', 'Test')
         ->set('departureTime', '07:45')
@@ -73,4 +73,3 @@ test('validation requires at least one day', function () {
         ->call('save')
         ->assertHasErrors(['applicableDays']);
 });
-

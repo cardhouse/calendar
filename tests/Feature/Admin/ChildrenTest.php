@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Child;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -24,7 +24,7 @@ test('children are listed on admin page', function () {
 });
 
 test('can create a new child', function () {
-    Volt::test('admin.children')
+    Livewire::test('pages::admin.children')
         ->call('create')
         ->set('name', 'Emma')
         ->set('avatarColor', '#3B82F6')
@@ -37,7 +37,7 @@ test('can create a new child', function () {
 test('can edit an existing child', function () {
     $child = Child::factory()->create(['name' => 'Emma']);
 
-    Volt::test('admin.children')
+    Livewire::test('pages::admin.children')
         ->call('edit', $child->id)
         ->assertSet('name', 'Emma')
         ->set('name', 'Emma Rose')
@@ -49,7 +49,7 @@ test('can edit an existing child', function () {
 test('can delete a child', function () {
     $child = Child::factory()->create();
 
-    Volt::test('admin.children')
+    Livewire::test('pages::admin.children')
         ->call('confirmDelete', $child->id)
         ->assertSet('showDeleteConfirm', true)
         ->call('delete');
@@ -58,10 +58,9 @@ test('can delete a child', function () {
 });
 
 test('validation prevents empty name', function () {
-    Volt::test('admin.children')
+    Livewire::test('pages::admin.children')
         ->call('create')
         ->set('name', '')
         ->call('save')
         ->assertHasErrors(['name']);
 });
-

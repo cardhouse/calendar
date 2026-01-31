@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 use App\Models\Setting;
 use App\Services\Weather\OpenMeteoClient;
-use App\Services\Weather\WeatherService;
 use Illuminate\Support\Facades\Cache;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 beforeEach(function () {
     Cache::flush();
@@ -24,7 +23,7 @@ test('page loads current settings', function () {
     Setting::set('weather.units', 'celsius');
     Setting::set('weather.widget_size', 'large');
 
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->assertSet('enabled', true)
         ->assertSet('locationName', 'New York, NY')
         ->assertSet('units', 'celsius')
@@ -34,7 +33,7 @@ test('page loads current settings', function () {
 test('can toggle weather enabled', function () {
     Setting::set('weather.enabled', false);
 
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->assertSet('enabled', false)
         ->toggle('enabled')
         ->assertSet('enabled', true);
@@ -57,14 +56,14 @@ test('can search for locations', function () {
 
     $this->app->instance(OpenMeteoClient::class, $mockClient);
 
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->set('searchQuery', 'New York')
         ->assertSet('showSearchResults', true)
         ->assertCount('searchResults', 1);
 });
 
 test('can select a location from search results', function () {
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->set('searchResults', [
             [
                 'name' => 'New York',
@@ -84,7 +83,7 @@ test('can select a location from search results', function () {
 test('can clear selected location', function () {
     Setting::set('weather.location', ['lat' => 40.7128, 'lon' => -74.006, 'name' => 'New York']);
 
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->assertSet('locationName', 'New York')
         ->call('clearLocation')
         ->assertSet('latitude', null)
@@ -93,7 +92,7 @@ test('can clear selected location', function () {
 });
 
 test('can change temperature units', function () {
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->set('units', 'celsius')
         ->assertSet('units', 'celsius')
         ->set('units', 'fahrenheit')
@@ -101,7 +100,7 @@ test('can change temperature units', function () {
 });
 
 test('can change widget size', function () {
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->set('widgetSize', 'compact')
         ->assertSet('widgetSize', 'compact')
         ->set('widgetSize', 'large')
@@ -109,7 +108,7 @@ test('can change widget size', function () {
 });
 
 test('can toggle display options', function () {
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->assertSet('showFeelsLike', true)
         ->toggle('showFeelsLike')
         ->assertSet('showFeelsLike', false)
@@ -118,7 +117,7 @@ test('can toggle display options', function () {
 });
 
 test('save persists all settings', function () {
-    Volt::test('admin.weather')
+    Livewire::test('pages::admin.weather')
         ->set('enabled', true)
         ->set('latitude', 40.7128)
         ->set('longitude', -74.006)

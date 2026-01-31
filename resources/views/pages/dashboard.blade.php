@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.app')] #[Title('Family Morning Dashboard')] class extends Component {
     public bool $weatherEnabled = false;
@@ -230,7 +230,8 @@ new #[Layout('components.layouts.app')] #[Title('Family Morning Dashboard')] cla
             @if(count($eventData) > 0)
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     @foreach($eventData as $event)
-                        <div x-data="eventCountdown({{ $event['timestamp'] }})"
+                        <div wire:key="event-{{ $event['id'] }}"
+                             x-data="eventCountdown({{ $event['timestamp'] }})"
                              x-init="startTimer()"
                              class="bg-slate-800 rounded-xl p-5 border-l-4"
                              style="border-color: {{ $event['color'] }}">

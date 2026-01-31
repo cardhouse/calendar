@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\CalendarEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -27,7 +27,7 @@ test('events are listed', function () {
 test('can create a new event', function () {
     $startsAt = now()->addDays(5)->format('Y-m-d\TH:i');
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('create')
         ->set('name', 'Birthday Party')
         ->set('startsAt', $startsAt)
@@ -41,7 +41,7 @@ test('can create a new event', function () {
 test('can edit an event', function () {
     $event = CalendarEvent::factory()->create(['name' => 'Birthday Party']);
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('edit', $event->id)
         ->assertSet('name', 'Birthday Party')
         ->set('name', 'Birthday Bash')
@@ -53,7 +53,7 @@ test('can edit an event', function () {
 test('can delete an event', function () {
     $event = CalendarEvent::factory()->create();
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('confirmDelete', $event->id)
         ->call('delete');
 
@@ -69,7 +69,7 @@ test('can filter events by upcoming', function () {
         'name' => 'Past Event',
     ]);
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->assertSee('Future Event')
         ->assertDontSee('Past Event');
 });
@@ -83,14 +83,14 @@ test('can filter events by past', function () {
         'name' => 'Past Event',
     ]);
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('setFilter', 'past')
         ->assertSee('Past Event')
         ->assertDontSee('Future Event');
 });
 
 test('validation requires name', function () {
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('create')
         ->set('name', '')
         ->set('startsAt', now()->addDay()->format('Y-m-d\TH:i'))
@@ -102,7 +102,7 @@ test('can create event with departure time', function () {
     $startsAt = now()->addDays(5)->format('Y-m-d\TH:i');
     $departureTime = now()->addDays(5)->subHour()->format('Y-m-d\TH:i');
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('create')
         ->set('name', 'Doctor Appointment')
         ->set('startsAt', $startsAt)
@@ -124,7 +124,7 @@ test('can edit event departure time', function () {
 
     $departureTime = now()->addDays(5)->subHour()->format('Y-m-d\TH:i');
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('edit', $event->id)
         ->assertSet('departureTime', '')
         ->set('departureTime', $departureTime)
@@ -136,7 +136,7 @@ test('can edit event departure time', function () {
 test('can clear event departure time', function () {
     $event = CalendarEvent::factory()->withDepartureTime()->create();
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('edit', $event->id)
         ->set('departureTime', '')
         ->call('save');
@@ -148,7 +148,7 @@ test('departure time must be before event start time', function () {
     $startsAt = now()->addDay()->format('Y-m-d\TH:i');
     $departureTime = now()->addDays(2)->format('Y-m-d\TH:i'); // After event
 
-    Volt::test('admin.events')
+    Livewire::test('pages::admin.events')
         ->call('create')
         ->set('name', 'Test Event')
         ->set('startsAt', $startsAt)
@@ -156,4 +156,3 @@ test('departure time must be before event start time', function () {
         ->call('save')
         ->assertHasErrors(['departureTime']);
 });
-

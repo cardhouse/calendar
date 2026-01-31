@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Services\Weather\WeatherData;
 use App\Services\Weather\WeatherService;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new class extends Component
 {
@@ -120,8 +120,9 @@ new class extends Component
                 {{-- Precipitation Alerts --}}
                 @if($showPrecipitation && $weather->hasPrecipitationAlerts())
                     <div class="mt-2 space-y-1">
-                        @foreach($weather->precipitationAlerts as $alert)
-                            <div class="text-base px-3 py-1 rounded-lg inline-block
+                        @foreach($weather->precipitationAlerts as $index => $alert)
+                            <div wire:key="precip-alert-{{ $index }}"
+                                 class="text-base px-3 py-1 rounded-lg inline-block
                                 {{ $alert->type === 'snow' ? 'bg-blue-900/50 text-blue-200' : 'bg-cyan-900/50 text-cyan-200' }}">
                                 {{ $alert->getDescription($units) }}
                             </div>

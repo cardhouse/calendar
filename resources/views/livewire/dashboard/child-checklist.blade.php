@@ -6,7 +6,7 @@ use App\Models\Child;
 use App\Models\EventRoutineItem;
 use App\Models\RoutineItem;
 use Illuminate\Database\Eloquent\Collection;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new class extends Component {
     public Child $child;

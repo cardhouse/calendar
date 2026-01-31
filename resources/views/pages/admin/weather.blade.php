@@ -6,7 +6,7 @@ use App\Models\Setting;
 use App\Services\Weather\WeatherService;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.admin')] #[Title('Weather Settings')] class extends Component
 {
@@ -159,7 +159,8 @@ new #[Layout('components.layouts.admin')] #[Title('Weather Settings')] class ext
                         @if($showSearchResults)
                             <div class="absolute z-10 w-full mt-1 bg-white dark:bg-slate-700 rounded-lg shadow-lg border border-slate-200 dark:border-slate-600 max-h-60 overflow-y-auto">
                                 @foreach($searchResults as $index => $result)
-                                    <button type="button"
+                                    <button wire:key="search-result-{{ $index }}"
+                                            type="button"
                                             wire:click="selectLocation({{ $index }})"
                                             class="w-full px-4 py-3 text-left hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors {{ $loop->first ? 'rounded-t-lg' : '' }} {{ $loop->last ? 'rounded-b-lg' : '' }}">
                                         <span class="font-medium">{{ $result['name'] }}</span>

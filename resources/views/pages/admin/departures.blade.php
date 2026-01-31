@@ -6,7 +6,7 @@ use App\Models\DepartureTime;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.admin')] #[Title('Manage Departure Times')] class extends Component {
     /** @var Collection<int, DepartureTime> */
@@ -222,7 +222,7 @@ new #[Layout('components.layouts.admin')] #[Title('Manage Departure Times')] cla
                         </label>
                         <div class="flex flex-wrap gap-3">
                             @foreach($dayOptions as $value => $label)
-                                <label class="flex items-center gap-2 cursor-pointer">
+                                <label wire:key="day-option-{{ $value }}" class="flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox"
                                            wire:model="applicableDays"
                                            value="{{ $value }}"

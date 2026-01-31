@@ -9,7 +9,7 @@ use App\Models\EventRoutineItem;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
-use Livewire\Volt\Component;
+use Livewire\Component;
 
 new #[Layout('components.layouts.admin')] #[Title('Manage Event Routines')] class extends Component {
     public string $activeTab = 'departures';
@@ -193,7 +193,7 @@ new #[Layout('components.layouts.admin')] #[Title('Manage Event Routines')] clas
                     @if($departures->isNotEmpty())
                         <ul class="space-y-2">
                             @foreach($departures as $departure)
-                                <li>
+                                <li wire:key="departure-{{ $departure->id }}">
                                     <button wire:click="selectEventable('departure', {{ $departure->id }})"
                                             class="w-full text-left p-3 rounded-lg transition-colors {{ $selectedEventableType === 'departure' && $selectedEventableId === $departure->id ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500' : 'bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600' }}">
                                         <div class="font-medium">{{ $departure->name }}</div>
@@ -215,7 +215,7 @@ new #[Layout('components.layouts.admin')] #[Title('Manage Event Routines')] clas
                     @if($events->isNotEmpty())
                         <ul class="space-y-2">
                             @foreach($events as $event)
-                                <li>
+                                <li wire:key="calendar-event-{{ $event->id }}">
                                     <button wire:click="selectEventable('event', {{ $event->id }})"
                                             class="w-full text-left p-3 rounded-lg transition-colors {{ $selectedEventableType === 'event' && $selectedEventableId === $event->id ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500' : 'bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600' }}">
                                         <div class="font-medium">{{ $event->name }}</div>
@@ -296,7 +296,7 @@ new #[Layout('components.layouts.admin')] #[Title('Manage Event Routines')] clas
                                                 wire:model="childId"
                                                 class="w-full rounded-lg border-slate-300 dark:border-slate-600 dark:bg-slate-700 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                             @foreach($children as $child)
-                                                <option value="{{ $child->id }}">{{ $child->name }}</option>
+                                                <option wire:key="child-option-{{ $child->id }}" value="{{ $child->id }}">{{ $child->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('childId')

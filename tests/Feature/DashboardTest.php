@@ -8,7 +8,7 @@ use App\Models\DepartureTime;
 use App\Models\RoutineItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -65,7 +65,7 @@ test('child checklist can toggle routine items', function () {
         'name' => 'Brush teeth',
     ]);
 
-    Volt::test('dashboard.child-checklist', ['child' => $child])
+    Livewire::test('dashboard.child-checklist', ['child' => $child])
         ->assertSee('Brush teeth')
         ->call('toggleItem', $item->id)
         ->assertSet('child.routineItems.0.id', $item->id);
@@ -80,7 +80,7 @@ test('child checklist shows progress percentage', function () {
 
     $item1->markComplete();
 
-    Volt::test('dashboard.child-checklist', ['child' => $child->fresh()])
+    Livewire::test('dashboard.child-checklist', ['child' => $child->fresh()])
         ->assertSee('1/2');
 });
 
@@ -90,7 +90,7 @@ test('child checklist shows celebration when all complete', function () {
 
     $item->markComplete();
 
-    Volt::test('dashboard.child-checklist', ['child' => $child->fresh()])
+    Livewire::test('dashboard.child-checklist', ['child' => $child->fresh()])
         ->assertSee('All done!')
         ->assertSee('Emma');
 });
@@ -144,4 +144,3 @@ test('dashboard shows recurring departure when event departure is later', functi
 
     Carbon::setTestNow();
 });
-

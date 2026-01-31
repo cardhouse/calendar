@@ -7,7 +7,7 @@ use App\Models\Child;
 use App\Models\DepartureTime;
 use App\Models\EventRoutineItem;
 use App\Models\RoutineItem;
-use Livewire\Volt\Volt;
+use Livewire\Livewire;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -31,7 +31,7 @@ test('child checklist shows event routine items for next event', function () {
         ->with(['completions' => fn ($q) => $q->whereDate('completion_date', today())])
         ->get();
 
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -51,7 +51,7 @@ test('child checklist does not show event routines when no upcoming event', func
         'is_active' => true,
     ]);
 
-    Volt::test('dashboard.child-checklist', ['child' => $child])
+    Livewire::test('dashboard.child-checklist', ['child' => $child])
         ->assertDontSee('For:');
 });
 
@@ -75,7 +75,7 @@ test('event routine items can be toggled', function () {
         ->with(['completions' => fn ($q) => $q->whereDate('completion_date', today())])
         ->get();
 
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -111,7 +111,7 @@ test('progress includes event routine items', function () {
         ->get();
 
     // 2 daily + 1 event = 3 total
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -152,7 +152,7 @@ test('all complete celebration includes event items', function () {
         ->get();
 
     // Not complete yet (event item not done)
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -172,7 +172,7 @@ test('all complete celebration includes event items', function () {
         ->with(['completions' => fn ($q) => $q->whereDate('completion_date', today())])
         ->get();
 
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -215,7 +215,7 @@ test('only shows routines for next upcoming event', function () {
         ->get();
 
     // Should only show School Bus routines
-    Volt::test('dashboard.child-checklist', [
+    Livewire::test('dashboard.child-checklist', [
         'child' => $child,
         'eventRoutineItems' => $eventRoutineItems,
         'eventName' => 'School Bus',
@@ -224,4 +224,3 @@ test('only shows routines for next upcoming event', function () {
         ->assertSee('School item')
         ->assertDontSee('Bowling item');
 });
-
