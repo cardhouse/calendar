@@ -31,9 +31,13 @@
     <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
         <aside class="w-full md:w-64 shrink-0">
             <nav class="bg-white dark:bg-slate-800 rounded-lg shadow p-4 space-y-2">
-                <a href="{{ route('admin.children.index') }}" 
+                <a href="{{ route('admin.children.index') }}"
                    class="block px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.children.*') ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-700' }}">
                     Children
+                </a>
+                <a href="{{ route('admin.routine-templates.index') }}"
+                   class="block px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.routine-templates.*') ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-700' }}">
+                    Routine Templates
                 </a>
                 <a href="{{ route('admin.departures.index') }}" 
                    class="block px-4 py-2 rounded-lg transition-colors {{ request()->routeIs('admin.departures.*') ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'hover:bg-slate-100 dark:hover:bg-slate-700' }}">

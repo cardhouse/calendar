@@ -14,6 +14,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::livewire('/children', 'pages::admin.children')->name('children.index');
     Route::livewire('/children/{child}/routines', 'pages::admin.routines')->name('children.routines');
 
+    // Routine templates (drag and drop to children)
+    Route::livewire('/routine-templates', 'pages::admin.routine-templates')->name('routine-templates.index');
+
     // Departure times
     Route::livewire('/departures', 'pages::admin.departures')->name('departures.index');
 
